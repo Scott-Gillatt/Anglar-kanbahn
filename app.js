@@ -85,6 +85,7 @@
 
 		var vm = this;
 
+		vm.isEdit = story ? true : false;
 		vm.newStory = story || {
 			name: '',
 			details: ''
