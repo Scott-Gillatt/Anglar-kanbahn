@@ -69,9 +69,9 @@
 			);
 		}
 
-		// vm.deleteStory = function(story){
-		// 	let temp = indexOf(story);
-		// }
+		vm.deleteStory = function(story){
+			vm.stories = storageService.deleteStory(story);
+		}
 
 		storageService.getStories().then(
 			function (stories) {

@@ -25,6 +25,14 @@
 			saveToLocalStorage();
 			return stories;
 		}
+
+		function deleteStory (story){
+			let storyIndex = stories.indexOf(story);
+			console.log(storyIndex);
+			stories.splice(storyIndex, 1);
+			saveToLocalStorage();
+			return stories;
+		}
 		
 		function getStories() {
 
@@ -44,7 +52,8 @@
 		return {
 			addStory: addStory,
 			getStories: getStories,
-			updateStory: updateStory
+			updateStory: updateStory,
+			deleteStory: deleteStory
 		};
 	}]);	
 })();

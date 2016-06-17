@@ -53,11 +53,12 @@
 		<div class="col-md-12">
 			<div ng-repeat="story in vm.stories track by $index" class="col-md-3">
 				<div class="panel panel-default">
-				<div class="panel-heading"><span class="bold">Story Name:</span> {{ story.name }}</div>
-				<div class="panel-body"><span class="bold">Story Details:</span> {{ story.details }}</div>
-				<div class="panel-footer"><button type="button" class="btn btn-info" ng-click="vm.editStory(story)">Edit</button>
-				<button type="button" class="btn btn-danger" ng-click="vm.deleteStory(story)">Delete</button>
-				</div>
+					<div class="panel-heading"><span class="bold">Story Name:</span> {{ story.name }}</div>
+					<div class="panel-body"><span class="bold">Story Details:</span> {{ story.details }}</div>
+					<div class="panel-footer">
+						<button type="button" class="btn btn-info" ng-click="vm.editStory(story)">Edit</button>
+						<button type="button" class="btn btn-danger" ng-click="vm.deleteStory(story)">Delete</button>
+					</div>
 				</div>
 			</div>
 		</div>
