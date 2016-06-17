@@ -23,7 +23,7 @@
 			orginal.name = story.name;
 			orginal.details = story.details;
 			saveToLocalStorage();
-			return story;
+			return stories;
 		}
 		
 		function getStories() {
