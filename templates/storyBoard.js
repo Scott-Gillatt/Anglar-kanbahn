@@ -8,7 +8,7 @@
             controllerAs: 'vm'
         });
 
-    app.controller('listModalController', listModalController())
+    app.controller('listModalController', listModalController)
 
     storyBoardController.$inject = ['$uibModal', 'storageService', 'guidService']
 
