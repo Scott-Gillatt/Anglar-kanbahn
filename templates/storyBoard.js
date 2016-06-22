@@ -10,9 +10,9 @@
 
     app.controller('listModalController', listModalController())
 
-    storyBoardController.$inject = ['$uibModal', 'storageService']
+    storyBoardController.$inject = ['$uibModal', 'storageService', 'guidService']
 
-    function storyBoardController($uibModal, storageService) {
+    function storyBoardController($uibModal, storageService, guidService) {
         
         var vm = this;
         vm.addList = function () {
