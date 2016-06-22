@@ -52,7 +52,8 @@
 		<br>
 	</div>-->
 
-	<div class="container-responsive">
+<!--Start of my Stuff-->
+	<!--<div class="container-responsive">
 		<div class="col-md-12">
 			<div ng-repeat="story in vm.stories track by $index" class="col-md-3 text-center">
 				<div class="panel panel-default">
@@ -93,7 +94,9 @@
 		<button ng-if="vm.isEdit" class="btn btn-success" type="button" ng-click="vm.ok()">Update</button>
 		<button class="btn btn-danger" type="button" ng-click="vm.cancel()">Cancel</button>
 	</div>
-</script>
+</script>-->
+
+	<story-board></story-board>
 
 	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -104,6 +107,9 @@
 	<script src="app.js"></script>
 	<script src="storage.js"></script>
 	<script src="guid.js"></script>
+	<script src="templates/storyBoard.js"></script>
+	<script src="templates/storyList.js"></script>
+	<script src="templates/storyCard.js"></script>
 </body>
 
 </html>
