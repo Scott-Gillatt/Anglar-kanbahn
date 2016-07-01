@@ -1,18 +1,46 @@
 <div>
-	<div class="panel panel-default">
+	<div class="panel panel-default" ondragover="sl.canDrop(event)">
 		<div class="panel-heading">
-			<strong>{{ vm.list.name }} </strong>
+			<strong>{{ sl.list.name }} </strong>
 			<div class="btn-group pull-right" role="group">
-				<button class="btn btn-default btn-xs" ng-click="vm.addCard()"><i class="fa fa-plus"></i></button>
-				<button class="btn btn-default btn-xs" ng-click="vm.editList()"><i class="fa fa-pencil"></i></button>
-				<button class="btn btn-default btn-xs"><i class="fa fa-times"></i></button>
+				<button class="btn btn-default btn-xs" ng-click="sl.addCard()"><i class="fa fa-plus"></i></button>
+				<button class="btn btn-default btn-xs" ng-click="sl.editList()"><i class="fa fa-pencil"></i></button>
+				<button class="btn btn-default btn-xs" ng-click="sl.deleteList()"><i class="fa fa-times"></i></button>
 			</div>
 		</div>
 		<div class="panel-body">
 			<div>
-				<story-card ng-repeat="card in vm.cards track by $index" story="card"></story-card>
+				<story-card ng-repeat="card in sl.cards track by $index" card="card"></story-card>
 			</div>
 		</div>
 	</div>
 	<div class="storyListPadding"></div>
 </div>
+
+<script type="text/ng-template" id="storyCardModal.html">
+	<div class="modal-header">
+		<h3 ng-if="cm.isEdit" class="modal-title">Update A Card</h3>
+		<h3 ng-if="!cm.isEdit" class="modal-title">Add A Card</h3>
+	</div>
+	<div class="modal-body">
+		<form class="form-horizontal">
+			<div class="form-group">
+				<label for="summary" class="col-sm-2 control-label">Summary</label>
+				<div class="col-sm-10">
+					<input type="text" ng-model="cm.card.summary" class="form-control" id="summary" placeholder="Summary">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="detail" class="col-sm-2 control-label">Detail</label>
+				<div class="col-sm-10">
+					<textarea ng-model="cm.card.detail" class="form-control" id="detail" placeholder="Detail"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="modal-footer">
+		<button ng-if="cm.isEdit" class="btn btn-success" type="button" ng-click="cm.ok()">Update</button>
+		<button ng-if="!cm.isEdit" class="btn btn-success" type="button" ng-click="cm.ok()">Add</button>
+		<button class="btn btn-danger" type="button" ng-click="cm.cancel()">Cancel</button>
+	</div>
+</script>
