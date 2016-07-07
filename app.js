@@ -18,11 +18,11 @@
 				controllerAs: 'rm',
 				resolve: {
 					results: function () {
-						// return results.map(function (item){
+						return results.map(function (item){
 
-						// return Object.assign({}, item);
-						// })
-						return results;
+						return Object.assign({}, item);
+						})
+						// return results;
 					},
 					term: function () {
 						return ac.searchTerm
