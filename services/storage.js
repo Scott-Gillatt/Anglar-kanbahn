@@ -1,21 +1,21 @@
 (function () {
-
+	
 	var app = angular.module('ngKanban');
 
 	app.factory('storageService', ['$q', function ($q) {
-
+		
 		var LIST_STORAGE_ID = 'kanban-list-store';
 		var STORY_STORAGE_ID = 'kanban-story-store';
 		var lists = [];
 		var stories = [];
 
 		function addList(list) {
-
+			
 			lists.push(list);
 			saveToLocalStorage();
 
-			return lists;
-		}
+			return lists; 
+		}	
 
 		function updateList(list) {
 
@@ -25,7 +25,7 @@
 
 			original.name = list.name;
 			original.description = list.description;
-
+			
 			saveToLocalStorage();
 
 			return lists;
@@ -41,20 +41,20 @@
 
 			return lists;
 		}
-
+		
 		function getLists() {
 
 			var deferred = $q.defer();
 
 			lists = JSON.parse(localStorage.getItem(LIST_STORAGE_ID) || '[]');
-
+			
 			deferred.resolve(lists);
-
+			
 			return deferred.promise;
 		}
 
 		function addStory(story) {
-
+			
 			stories.push(story);
 			saveToLocalStorage();
 
@@ -62,8 +62,8 @@
 				return item.listId === story.listId;
 			});
 
-			return filtered;
-		}
+			return filtered; 
+		}	
 
 		function updateStory(story) {
 
@@ -73,7 +73,7 @@
 
 			original.summary = story.summary;
 			original.detail = story.detail;
-
+			
 			saveToLocalStorage();
 
 			var filtered = stories.filter(function (item) {
@@ -97,34 +97,32 @@
 
 			return filtered;
 		}
-
+		
 		function getStories(listId) {
 
 			var deferred = $q.defer();
 
 			stories = JSON.parse(localStorage.getItem(STORY_STORAGE_ID) || '[]');
-
+			
 			var filtered = stories.filter(function (item) {
 				return item.listId === listId;
 			});
-			deferred.resolve(filtered);
 
+			deferred.resolve(filtered);
+			
 			return deferred.promise;
 		}
 
-		function deleteCard(card) {
+		function findStories(term) {
 
-			stories = stories.filter(function (item) {
-				return item.id !== card.id;
-			});
+			var found = stories.filter(function (item) {
+				
+				var data = item.summary.toLowerCase() + ' ' + item.detail.toLowerCase();
 
-			saveToLocalStorage();
-
-			var filtered = stories.filter(function (item) {
-				return item.cardId === card.cardId;
-			});
-
-			return filtered;
+				return data.includes(term.toLowerCase());
+			});	
+			
+			return found;
 		}
 
 		function saveToLocalStorage() {
@@ -141,7 +139,7 @@
 			getStories: getStories,
 			updateStory: updateStory,
 			deleteStory: deleteStory,
-			deleteCard: deleteCard
+			findStories: findStories
 		};
-	}]);
+	}]);	
 })();
