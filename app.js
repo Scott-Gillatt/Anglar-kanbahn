@@ -24,15 +24,14 @@
 				ac.showLogin = false;
 				ac.showRegister = false;
 				ac.showLogout = true;
-				$scope.apply();
 			}
 			else {
 				ac.auth.user = null;
 				ac.showLogin = true;
 				ac.showRegister = true;
 				ac.showLogout = false;
-				$scope.apply();
 			}
+				$scope.apply();
 		})
 
 		ac.register = function () {
@@ -83,7 +82,7 @@
 
 		ac.logout = function () {
 			if (firebase.auth().currentUser) {
-				firebase.auth().singOut();
+				firebase.auth().signOut();
 			}
 		};
 
