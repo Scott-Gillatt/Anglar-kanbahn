@@ -23,13 +23,43 @@
 					<input ng-model="ac.searchTerm" type="text" class="form-control" placeholder="Search">
 				</div>
 				<button ng-click="ac.search()" type="button" class="btn btn-primary" title="Search"><i class="fa fa-search"></i></button>
+				<button ng-if="!ac.auth.user" ng-click="ac.register()" type="button" class="btn btn-primary" title="Register"><i class="fa fa-user-plus" aria-hidden="true">Register</i></button>
 			</form>
 		</div>
 	</nav>
 
 	<story-board></story-board>
 
-	<div ng-bind-html="ac.marked"></div>
+	<script type="text/ng-template" id="registerModal.html">
+		<div class="modal-header">
+			<h3 class="modal-title">Search Results</h3>
+		</div>
+		<div class="modal-body">
+			<div class="alert alert-danger" ng-show="rm.errors.length">
+				<ul>
+					<li class="text-danger" ng-repeat="error in rm.errors track by $index">{{error}}</li>
+				</ul>
+			</div>
+			<form>
+				<div class="form-group">
+					<label>Name</label>
+					<input type="text"  ng-model="rm.user.name" class="form-control"  placeholder="Name">
+				</div>
+				<div class="form-group">
+					<label>Email</label>
+					<input type="email" ng-model="rm.user.email" class="form-control" placeholder="Email">
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" ng-model="rm.user.password" class="form-control" placeholder="Password">
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-success" type="button" ng-click="rm.register()">Register</button>
+			<button class="btn btn-danger" type="button" ng-click="rm.cancel()">Close</button>
+		</div>
+	</script>
 
 	<script type="text/ng-template" id="searchResultsModal.html">
 		<div class="modal-header">
@@ -48,6 +78,8 @@
 			<button class="btn btn-danger" type="button" ng-click="rm.cancel()">Close</button>
 		</div>
 	</script>
+
+
 
 	<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
 	<script>
