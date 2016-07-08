@@ -4,24 +4,47 @@
 
 	app.value('auth', {});
 
-	app.controller('appController', ['auth', '$rootScope', 'storageService', '$uibModal', 'firebaseService', function (auth, $rootScope, storageService, $uibModal, firebaseService) {
+	app.controller('appController', ['auth', '$rootScope', '$scope', 'storageService', '$uibModal', 'firebaseService', function (auth, $rootScope, $scope, storageService, $uibModal, firebaseService) {
 
 		var ac = this;
 
-		ac.auth = auth;
+		ac.showRegister = true;
+		ac.showLogin = true;
+		ac.showLogout = false;
 		ac.searchTerm = '';
 
-		firebase.auth().onAuthStateChanged(function (user) {
-			auth.user = user;
+		ac.auth = {
+			user: auth.user
+		};
 
-			console.log('ac user: ', ac.auth)
+		firebase.auth().onAuthStateChanged(function (user) {
+
+			if (user) {
+				ac.auth.user = user;
+				ac.showLogin = false;
+				ac.showRegister = false;
+				ac.showLogout = true;
+				$scope.apply();
+			}
+			else {
+				ac.auth.user = null;
+				ac.showLogin = true;
+				ac.showRegister = true;
+				ac.showLogout = false;
+				$scope.apply();
+			}
 		})
 
 		ac.register = function () {
 			var modalInstance = $uibModal.open({
 				templateUrl: 'registerModal.html',
 				controller: 'registerModalController',
-				controllerAs: 'rm'	
+				controllerAs: 'rm',
+				resolve: {
+					mode: function () {
+						return 'register';
+					}
+				}
 
 			});
 
@@ -33,6 +56,35 @@
 					// cancelled
 				}
 			);
+		};
+
+		ac.login = function () {
+			var modalInstance = $uibModal.open({
+				templateUrl: 'registerModal.html',
+				controller: 'registerModalController',
+				controllerAs: 'rm',
+				resolve: {
+					mode: function () {
+						return 'login';
+					}
+				}
+
+			});
+
+			modalInstance.result.then(
+				function (user) {
+					firebaseService.authorizeAccount(user);
+				},
+				function () {
+					// cancelled
+				}
+			);
+		}
+
+		ac.logout = function () {
+			if (firebase.auth().currentUser) {
+				firebase.auth().singOut();
+			}
 		};
 
 		ac.search = function () {
@@ -68,11 +120,12 @@
 		//ac.marked = $sce.trustAsHtml(markTerms('Mr. Blue lives in a blue house and wears a blue suite and blue hat.', 'blue'));
 	}]);
 
-	app.controller('registerModalController', ['$uibModalInstance', function ($uibModalInstance) {
+	app.controller('registerModalController', ['$uibModalInstance', 'mode', function ($uibModalInstance, mode) {
 
 		var rm = this;
 
 		rm.errors = [];
+		rm.mode = mode;
 
 		rm.user = {
 			id: '',
@@ -90,13 +143,27 @@
 			if (rm.user.email === '') {
 				rm.errors.push('A email address is required!');
 			}
-			if (rm.user.name === '') {
+			if (rm.user.password === '') {
 				rm.errors.push('A password is required!');
 			}
 			if (rm.errors.length < 1) {
 				$uibModalInstance.close(rm.user);
 			}
 		};
+
+		rm.login = function () {
+			rm.errors = [];
+
+			if (rm.user.email === '') {
+				rm.errors.push('A email address is required!');
+			}
+			if (rm.user.password === '') {
+				rm.errors.push('A password is required!');
+			}
+			if (rm.errors.length < 1) {
+				$uibModalInstance.close(rm.user);
+			}
+		}
 
 		rm.cancel = function () {
 			$uibModalInstance.dismiss('cancel');

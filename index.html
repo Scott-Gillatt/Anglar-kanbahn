@@ -23,7 +23,9 @@
 					<input ng-model="ac.searchTerm" type="text" class="form-control" placeholder="Search">
 				</div>
 				<button ng-click="ac.search()" type="button" class="btn btn-primary" title="Search"><i class="fa fa-search"></i></button>
-				<button ng-if="!ac.auth.user" ng-click="ac.register()" type="button" class="btn btn-primary" title="Register"><i class="fa fa-user-plus" aria-hidden="true">Register</i></button>
+				<button ng-show="ac.showLogin" ng-click="ac.login()" type="button" class="btn btn-primary" title="Login"><i class="fa fa-sign-in" aria-hidden="true"> Login</i></button>
+				<button ng-show="ac.showRegister" ng-click="ac.register()" type="button" class="btn btn-link" title="Register">Register</button>
+				<button ng-show="ac.showLogout" ng-click="ac.logout()" type="button" class="btn btn-primary" title="Logout"><i class="fa fa-sign-out" aria-hidden="true"> Logout</i></button>
 			</form>
 		</div>
 	</nav>
@@ -32,7 +34,8 @@
 
 	<script type="text/ng-template" id="registerModal.html">
 		<div class="modal-header">
-			<h3 class="modal-title">Search Results</h3>
+			<h3 ng-if="rm.mode == 'register'" class="modal-title">Create An Account</h3>
+			<h3 ng-if="rm.mode === 'login'" class="modal-title">Login</h3>
 		</div>
 		<div class="modal-body">
 			<div class="alert alert-danger" ng-show="rm.errors.length">
@@ -41,7 +44,7 @@
 				</ul>
 			</div>
 			<form>
-				<div class="form-group">
+				<div ng-if="rm.mode === 'register'" class="form-group">
 					<label>Name</label>
 					<input type="text"  ng-model="rm.user.name" class="form-control"  placeholder="Name">
 				</div>
@@ -56,7 +59,8 @@
 			</form>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-success" type="button" ng-click="rm.register()">Register</button>
+			<button ng-if="rm.mode === 'register'" class="btn btn-success" type="button" ng-click="rm.register()">Register</button>
+			<button ng-if="rm.mode === 'login'" class="btn btn-success" type="button" ng-click="rm.login()">Login</button>
 			<button class="btn btn-danger" type="button" ng-click="rm.cancel()">Close</button>
 		</div>
 	</script>

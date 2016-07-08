@@ -14,6 +14,15 @@
 			);
 		}
 
+		function authorizeAccount(user){
+			firebase.auth()
+			.signInWithEmailAndPassword(user.email, user.password)
+			.catch(function(error){
+				console.log(error)
+
+			})
+		}
+
 		function addList(list) {
 
 			firebase.database().ref('lists/' + list.id).set(list);
@@ -21,7 +30,8 @@
 
 		return {
 			createAccount: createAccount,
-			addList: addList
+			addList: addList,
+			authorizeAccount:authorizeAccount
 		};
 	}]);
 })();
