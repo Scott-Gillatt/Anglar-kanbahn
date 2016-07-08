@@ -18,11 +18,9 @@
 				controllerAs: 'rm',
 				resolve: {
 					results: function () {
-						return results.map(function (item){
-
-						return Object.assign({}, item);
-						})
-						// return results;
+						return results.map(function (item) {
+							return Object.assign({}, item);
+						});
 					},
 					term: function () {
 						return ac.searchTerm
@@ -48,21 +46,24 @@
 		var rm = this;
 
 		rm.results = results.map(function (item) {
-			var resultsItem = angular.copy(item)
-			resultsItem.summary = $sce.trustAsHtml(markTerms(item.summary, term));
-			resultsItem.detail = $sce.trustAsHtml(markTerms(item.detail, term));
 
-			return resultsItem;
+			var resultItem = angular.copy(item);
+
+			resultItem.summary = $sce.trustAsHtml(markTerms(item.summary, term));
+			resultItem.detail = $sce.trustAsHtml(markTerms(item.detail, term));
+
+			return resultItem;
 		});
 
-		rm.edit = function(storyId){
-			var story = results.find(function(item){
+		rm.edit = function (storyId) {
+			
+			var story = results.find(function (item) {
 				return item.id === storyId;
 			});
 
 			$uibModalInstance.close(story);
 		};
-
+		
 		rm.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
 		};

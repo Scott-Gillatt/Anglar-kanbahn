@@ -10,10 +10,10 @@
 
 	app.controller('listModalController', listModalController);
 
-	storyBoardController.$inject = ['$uibModal', 'storageService', 'guidService'];
+	storyBoardController.$inject = ['$uibModal', 'storageService', 'firebaseService', 'guidService'];
 	listModalController.$inject = ['$uibModalInstance', 'list'];
 	
-	function storyBoardController($uibModal, storageService, guidService) {
+	function storyBoardController($uibModal, storageService, firebaseService, guidService) {
 
 		var sb = this;
 		
@@ -49,6 +49,8 @@
 							newList.id = response.data;
 
 							sb.lists = storageService.addList(newList);
+
+							firebaseService.addList(newList);
 						}
 					).catch(
 						function (err) {
@@ -112,4 +114,3 @@
 
 	}
 })();
-

@@ -1,5 +1,5 @@
 (function () {
-
+	
 	var app = angular.module('ngKanban');
 
 	app.component('storyList', {
@@ -15,21 +15,21 @@
 	});
 
 	app.controller('cardModalController', cardModalController);
-
+	
 	storyListController.$inject = ['$scope', '$uibModal', 'storageService', 'guidService'];
 	cardModalController.$inject = ['$uibModalInstance', 'card'];
-
+	
 	function storyListController($scope, $uibModal, storageService, guidService) {
 
 		var sl = this;
 
-		console.log("List: ", sl)
-
+		console.log('List: ', sl);
+		
 		$scope.$on('edit-story', function (event, data) {
 			if (data.listId === sl.list.id) {
-				sl.editCard(data)
+				sl.editCard(data);
 			}
-		})
+		});
 
 		sl.cards = [];
 
@@ -50,7 +50,7 @@
 		}
 
 		sl.addCard = function () {
-
+			
 			var modalInstance = $uibModal.open({
 				templateUrl: 'storyCardModal.html',
 				controller: 'cardModalController',
@@ -84,9 +84,9 @@
 				}
 			);
 		}
-
+		
 		sl.editCard = function (card) {
-
+			
 			var modalInstance = $uibModal.open({
 				templateUrl: 'storyCardModal.html',
 				controller: 'cardModalController',
@@ -102,34 +102,27 @@
 				function (updatedCard) {
 
 					sl.cards = storageService.updateStory(updatedCard);
-
 				},
 				function () {
 					// cancelled
 				}
 			);
-		}
-		// sl.deleteCard = function (card) {
+		};
 
-		// 	sl.cards = storageService.deleteCard(card);
-		// }
 		sl.deleteCard = function (card) {
-
 			sl.cards = storageService.deleteStory(card);
-		}
+		};
 
-		sl.ca
-		nDrop = function (event) {
+		sl.canDrop = function (event) {
 			event.preventDefault();
 		}
-
 	}
 
 	function cardModalController($uibModalInstance, card) {
 
 		var cm = this;
 
-		cm.isEdit = card ? true : false;
+		cm.isEdit = card ? true : false;		
 		cm.card = card || {
 			summary: '',
 			detail: ''

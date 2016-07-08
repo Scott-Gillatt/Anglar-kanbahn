@@ -29,6 +29,8 @@
 
 	<story-board></story-board>
 
+	<div ng-bind-html="ac.marked"></div>
+
 	<script type="text/ng-template" id="searchResultsModal.html">
 		<div class="modal-header">
 			<h3 class="modal-title">Search Results</h3>
@@ -47,16 +49,28 @@
 		</div>
 	</script>
 
+	<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		// TODO: Replace with your project's customized code snippet
+		var config = {
+			apiKey: "AIzaSyDqnlBsn6yULRbFLKMPZEpGojh9qlf_0NU",
+			authDomain: "angularkanban.firebaseapp.com",
+			databaseURL: "https://angularkanban.firebaseio.com",
+			storageBucket: "angularkanban.appspot.com"
+		};
+		firebase.initializeApp(config);
+  	</script>
 	<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-resource.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-sanitize.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/lodash/4.11.2/lodash.min.js"></script>
 	<script src="app.js"></script>
 	<script src="services/guid.js"></script>
 	<script src="services/storage.js"></script>
+	<script src="services/firebase.js"></script>
 	<script src="components/storyBoard.js"></script>
 	<script src="components/storyList.js"></script>
 	<script src="components/storyCard.js"></script>
