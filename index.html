@@ -34,7 +34,7 @@
 			<h3 class="modal-title">Search Results</h3>
 		</div>
 		<div class="modal-body">
-			<div class="media" ng-repeat="story in rm.results track by $index"> 
+			<div class="media" ng-repeat="story in rm.results track by $index" ng-click="rm.edit(story.id)"> 
 				<div class="media-body"> 
 					<h4 class="media-heading" ng-bind-html="story.summary"></h4>
 					<span ng-bind-html="story.detail"></span>

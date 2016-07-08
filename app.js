@@ -2,7 +2,7 @@
 
 	var app = angular.module('ngKanban', ['ui.bootstrap']);
 
-	app.controller('appController', ['storageService', '$uibModal', function (storageService, $uibModal) {
+	app.controller('appController', ['$rootScope', 'storageService', '$uibModal', function ($rootScope, storageService, $uibModal) {
 		
 		var ac = this;
 
@@ -31,8 +31,8 @@
 			});
 
 			modalInstance.result.then(
-				function () {
-
+				function (story) {
+					$rootScope.$broadcast('edit-story', story);
 				},
 				function () {
 					// cancelled
@@ -47,14 +47,21 @@
 		
 		var rm = this;
 
-		results = results.map(function (item) {
-			item.summary = $sce.trustAsHtml(markTerms(item.summary, term));
-			item.detail = $sce.trustAsHtml(markTerms(item.detail, term));
+		rm.results = results.map(function (item) {
+			var resultsItem = angular.copy(item)
+			resultsItem.summary = $sce.trustAsHtml(markTerms(item.summary, term));
+			resultsItem.detail = $sce.trustAsHtml(markTerms(item.detail, term));
 
-			return item;
+			return resultsItem;
 		});
 
-		rm.results = results;
+		rm.edit = function(storyId){
+			var story = results.find(function(item){
+				return item.id === storyId;
+			});
+
+			$uibModalInstance.close(story);
+		};
 
 		rm.cancel = function () {
 			$uibModalInstance.dismiss('cancel');
