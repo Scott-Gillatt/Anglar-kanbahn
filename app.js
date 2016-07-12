@@ -2,7 +2,7 @@
 
 	var app = angular.module('ngKanban', ['ui.bootstrap']);
 
-	app.controller('appController', ['$rootScope', '$scope', '$timeout', 'storageService', 'firebaseService', '$uibModal', function ($rootScope, $scope, $timeout, storageService, firebaseService, $uibModal) {
+	app.controller('appController', ['$rootScope', '$scope', '$timeout', 'storageService', 'firebaseService', 'notificationServices', '$uibModal', function ($rootScope, $scope, $timeout, storageService, firebaseService, notificationServices, $uibModal) {
 		
 		var ac = this;
 
@@ -11,6 +11,8 @@
 		ac.showLogin = ac.user == null;
 		ac.showLogout = ac.user != null;
 		ac.searchTerm = '';
+		// notificationServices.showSuccess('Hello World', 'We hope this actually works!!');
+		// notificationServices.showError('Hello World', 'We hope this actually works!!');
 
 		firebase.auth().onAuthStateChanged(function (user) {
 

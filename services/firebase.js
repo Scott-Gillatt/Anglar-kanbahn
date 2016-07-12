@@ -2,7 +2,7 @@
 
 	var app = angular.module('ngKanban');
 
-	app.factory('firebaseService', ['$rootScope', '$q', function ($rootScope, $q) {
+	app.factory('firebaseService', ['$rootScope', 'notificationServices', '$q', function ($rootScope, notificationServices, $q) {
 
 		function createAccount(user) {
 
@@ -35,7 +35,7 @@
 			firebase.auth()
 				.signInWithEmailAndPassword(user.email, user.password)
 				.catch(function (error) {
-
+					notificationServices.showError('Login Failed', error.message)
 					console.log(error);
 				}
 			);
