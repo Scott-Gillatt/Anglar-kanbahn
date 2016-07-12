@@ -1,26 +1,44 @@
-
 (function () {
 
 	var app = angular.module('ngKanban');
 
-	app.factory('firebaseService', ['$q', function ($q) {
+	app.factory('firebaseService', ['$rootScope', '$q', function ($rootScope, $q) {
 
 		function createAccount(user) {
+
 			firebase.auth()
 				.createUserWithEmailAndPassword(user.email, user.password)
+				.then(function (newUser) {
+
+					newUser.updateProfile({
+  						displayName: user.name,
+  						photoURL: 'https://api.adorable.io/avatars/100/' + user.email + '.png'
+					})
+					.then(
+						function () {
+							$rootScope.$broadcast('profile-updated', newUser);
+						}
+					)	
+					.catch(function (error) {
+						// TODO: broadcast error message
+						console.log(error);
+					});
+				})
 				.catch(function (error) {
+					// TODO: broadcast error message
 					console.log(error);
 				}
 			);
 		}
 
-		function authorizeAccount(user){
+		function authorizeAccount(user) {
 			firebase.auth()
-			.signInWithEmailAndPassword(user.email, user.password)
-			.catch(function(error){
-				console.log(error)
+				.signInWithEmailAndPassword(user.email, user.password)
+				.catch(function (error) {
 
-			})
+					console.log(error);
+				}
+			);
 		}
 
 		function addList(list) {
@@ -30,8 +48,8 @@
 
 		return {
 			createAccount: createAccount,
-			addList: addList,
-			authorizeAccount:authorizeAccount
+			authorizeAccount: authorizeAccount,
+			addList: addList
 		};
 	}]);
 })();

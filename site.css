@@ -1,4 +1,3 @@
-
 body {
   background-color: #0077C2;
   margin: 20px;
@@ -14,6 +13,31 @@ body {
   margin: auto;
   font-family: 'Merienda';
   font-size: 20px;
+}
+
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+  background-color: #0066A5;
+}
+
+.navbar-inverse .navbar-nav>li>a {
+  color: #FFF;
+}
+
+.navbar-inverse .btn-link {
+  color: #FFF;
+}
+
+.navbar-nav>li>.dropdown-menu {
+  background-color: #0066A5;
+}
+
+.avatar-navbar {
+  padding-top: 10px;
+}
+
+.avatar {
+  height: 30px;
+  padding: 1px;
 }
 
 .storyBoard {
