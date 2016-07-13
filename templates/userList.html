@@ -3,9 +3,43 @@
         <ul class="nav navbar-nav">
             <li ng-repeat="user in ul.users">
                 <a class="avatar-navbar">
-                    <img ng-src="{{ user.photoUrl }}" class="img-thumbnail avatar">
+                    <img ng-src="{{ user.photoURL }}" ng-click="ul.userChat(user)" class="img-thumbnail avatar">
                 </a>
             </li>
         </ul>
     </div>
 </nav>
+
+<script type="text/ng-template" id="userChatModal.html">
+
+		<div class="modal-header">
+			<h3 class="modal-title">MonsterChit</h3><button type="button" ng-click="ul.close()" class="close"><span>&times;</span></button>
+		</div>
+
+		<div class="modal-body">
+            <div class="row">
+                <div class="col-sm-2"> 
+                    <div ng-repeat="user in ul.members">
+                        <a class="avatar-navbar">
+                    <img ng-src="{{ user.photoURL }}" class="img-thumbnail avatar-chat">
+                    </a>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="chat-box">
+                    <span>Hello World, I am in the Text Area</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-9">
+                    <textarea class="form-control" rows="2"></textarea>
+                </div>
+            </div>
+		</div>
+
+		<div class="modal-footer ">
+			<button class="btn btn-success" type="button" ng-click="ul.send()">Send</button>            
+		</div>
+
+	</script>

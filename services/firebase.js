@@ -2,7 +2,18 @@
 
 	var app = angular.module('ngKanban');
 
-	app.factory('firebaseService', ['$rootScope', 'notificationServices', '$q', function ($rootScope, notificationServices, $q) {
+	app.factory('firebaseService', ['$rootScope', '$q', 'notificationService', function ($rootScope, $q, notificationService) {
+
+		firebase.database().ref('users/').on('value', function (snapshot) {
+
+			var users = [];
+			
+			snapshot.forEach(function(childSnapshot) {
+				users.push(childSnapshot.val());
+			});
+
+			$rootScope.$broadcast('userlist-updated', users);
+		});
 
 		function createAccount(user) {
 
@@ -29,7 +40,7 @@
 					// TODO: broadcast error message
 					console.log(error);
 				}
-				);
+			);
 		}
 
 		function authorizeAccount(user) {
@@ -39,28 +50,32 @@
 					addOnlineUser(user);
 				})
 				.catch(function (error) {
-					notificationServices.showError('Login Failed', error.message)
+					notificationService.showError('Login Failed', error.message);
 					console.log(error);
 				}
-				);
+			);
 		}
 
 		function exitAccount() {
+
 			if (firebase.auth().currentUser) {
 				removeOnlineUser(firebase.auth().currentUser);
-			}
+      		} 
 		}
 
 		function getOnlineUsers() {
-			var users = [];
-			var deferred = $q.defer();
 
+			var users = [];			
+			var deferred = $q.defer();
+			
 			firebase.database().ref('users/').on('value', function (snapshot) {
-				snapshot.forEach(function (childSnapshot) {
-					users.push(childSnapshot.val());
+
+				snapshot.forEach(function(childSnapshot) {
+      				users.push(childSnapshot.val());
 				});
+
 				deferred.resolve(users);
-			})
+			});
 
 			return deferred.promise;
 		}
@@ -74,7 +89,7 @@
 			firebase.database().ref('users/' + user.uid).set({
 				id: user.uid,
 				name: user.displayName,
-				photoUrl: user.photoURL,
+				photoURL: user.photoURL,
 				lastLogin: new Date().getTime()
 			}).then(function () {
 				$rootScope.$broadcast('userlist-updated');
@@ -93,9 +108,9 @@
 		return {
 			createAccount: createAccount,
 			authorizeAccount: authorizeAccount,
-			addList: addList,
 			exitAccount: exitAccount,
-			getOnlineUsers: getOnlineUsers
+			getOnlineUsers: getOnlineUsers,
+			addList: addList
 		};
 	}]);
 })();

@@ -1,26 +1,23 @@
 (function () {
+	var app = angular.module('ngKanban');
 
-    var app = angular.module('ngKanban');
+	app.factory('notificationService', [function () {
 
-    app.factory('notificationServices', [function () {
+		toastr.options = {
+			closeButton: true
+		};
+		
+		function showSuccess(title, message) {
+			toastr.success(message, title)
+		};
 
-        toastr.options = {
-            closeButton: true
-        };
+		function showError(title, message) {
+			toastr.error(message, title)
+		};
 
-        function showSuccess(title, message) {
-            toastr.success(message, title)
-        };
-
-        function showError(title, message) {
-            toastr.error(message, title)
-        };
-
-        return {
-            showSuccess: showSuccess,
-            showError: showError
-        };
-
-
-    }])
-})()
+		return {
+			showSuccess: showSuccess,
+			showError: showError
+		};
+	}]);
+})();
