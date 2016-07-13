@@ -88,10 +88,7 @@
 		};
 		
 		ac.logout = function () {
-			
-			if (firebase.auth().currentUser) {
-        		firebase.auth().signOut();
-      		} 
+			firebaseService.exitAccount();
 		};
 		
 		ac.search = function () {
