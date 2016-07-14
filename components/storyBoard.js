@@ -10,10 +10,10 @@
 
 	app.controller('listModalController', listModalController);
 
-	storyBoardController.$inject = ['$uibModal', 'storageService', 'firebaseService', 'guidService', 'chatService'];
+	storyBoardController.$inject = ['$uibModal', 'storageService', 'firebaseService', 'guidService'];
 	listModalController.$inject = ['$uibModalInstance', 'list'];
 	
-	function storyBoardController($uibModal, storageService, firebaseService, guidService, chatService) {
+	function storyBoardController($uibModal, storageService, firebaseService, guidService) {
 
 		var sb = this;
 		

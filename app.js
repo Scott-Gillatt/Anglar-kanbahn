@@ -2,9 +2,11 @@
 
 	var app = angular.module('ngKanban', ['ui.bootstrap']);
 
+	app.value('globals', {});
+	
 	app.controller('appController', [
-		'$rootScope', '$scope', '$timeout', 'storageService', 'firebaseService', 'notificationService', '$uibModal',
-		function ($rootScope, $scope, $timeout, storageService, firebaseService, notificationService, $uibModal) {
+		'globals', '$rootScope', '$scope', '$timeout', 'storageService', 'firebaseService', 'notificationService', '$uibModal',
+		function (globals, $rootScope, $scope, $timeout, storageService, firebaseService, notificationService, $uibModal) {
 		
 		var ac = this;
 
@@ -33,6 +35,8 @@
 		});
 
 		ac.setUser = function (user) {
+			
+			globals.user = user;
 			
 			ac.user = user;
 			ac.showRegister = ac.user == null;

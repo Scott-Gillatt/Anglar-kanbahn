@@ -8,9 +8,9 @@
 		controllerAs: 'ul'
 	});
 
-	userListController.$inject = ['$scope', '$timeout', 'firebaseService','$uibModal'];
+	userListController.$inject = ['globals', '$scope', '$timeout', 'firebaseService', 'chatService','$uibModal'];
 
-	function userListController($scope, $timeout, firebaseService, $uibModal) {
+	function userListController(globals, $scope, $timeout, firebaseService, chatService, $uibModal) {
 
 		var ul = this;
 
@@ -66,12 +66,12 @@
 
 	}
 
-	app.controller('userChatController',['$uibModalInstance','firebaseService','user',function($uibModalInstance,firebaseService,user){
+	app.controller('userChatController',['globals', '$uibModalInstance','chatService','user',function(globals, $uibModalInstance,chatService,user){
 
 		var uc = this;
 		uc.members = [];
 
-		uc.members.push(firebase.auth().currentUser);
+		uc.members.push(globals.user);
 		uc.members.push(user);
 
 		console.log(uc.members);

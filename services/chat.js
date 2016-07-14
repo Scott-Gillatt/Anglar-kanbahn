@@ -2,12 +2,12 @@
 	
 	var app = angular.module('ngKanban');
 
-	app.factory('chatService', ['$rootScope', '$q', function ($rootScope, $q) {
-
-		subscribeToConversations();
+	app.factory('chatService', ['globals', '$rootScope', '$q', function ($rootScope, $q) {
 		
-		function subscribeToConversations(myUserId) {
+		function subscribeToConversations() {
 
+			var myUserId = globals.user.id;
+			
 			firebase.database().ref('chat/conversations/' + myUserId).on('value', function (snapshot) {
 			
 				var conversations = [];
