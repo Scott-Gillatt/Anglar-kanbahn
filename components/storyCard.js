@@ -1,5 +1,5 @@
 (function () {
-
+	
 	var app = angular.module('ngKanban');
 
 	app.component('storyCard', {
@@ -17,7 +17,7 @@
 	function storyCardController() {
 
 		var sc = this;
-
+	
 		sc.editCard = function () {
 			sc.list.editCard(sc.card);
 		}

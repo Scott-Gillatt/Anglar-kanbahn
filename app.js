@@ -121,7 +121,7 @@
 			);			
 		};
 
-	}]);
+		}]);
 
 	app.controller('registerModalController', ['$uibModalInstance', 'mode', function ($uibModalInstance, mode) {
 		
