@@ -2,12 +2,10 @@
 	
 	var app = angular.module('ngKanban');
 
-	app.factory('chatService', ['globals', '$rootScope', '$q', function ($rootScope, $q) {
+	app.factory('chatService', ['globals', '$rootScope', '$q', function (globals, $rootScope, $q) {
 		
-		function subscribeToConversations() {
+		function subscribeToConversations(myUserId) {
 
-			var myUserId = globals.user.id;
-			
 			firebase.database().ref('chat/conversations/' + myUserId).on('value', function (snapshot) {
 			
 				var conversations = [];
@@ -72,11 +70,27 @@
 			
 			return deferred.promise;
 		}
+
+		function postMessage(conversationId, myUserId, otherUserId, text) {
+			
+			var timeStamp = new Date().getTime();
+			var messageId = myUserId + '-' + timeStamp;
+
+			firebase.database().ref('/chat/conversations/' + myUserId + '/' + conversationId).set(true);
+			firebase.database().ref('/chat/conversations/' + otherUserId + '/' + conversationId).set(true);
+
+			firebase.database().ref('/chat/messages/' + conversationId + '/' + messageId).set({
+				timestamp: timeStamp.toString(),
+				uid: myUserId,
+				text: text
+			});
+		}
 		
 		return {
 			subscribeToConversations: subscribeToConversations,
 			subscribeToMessages: subscribeToMessages,
-			getConversationId: getConversationId
+			getConversationId: getConversationId,
+			postMessage: postMessage
 		};
 	}]);
 	

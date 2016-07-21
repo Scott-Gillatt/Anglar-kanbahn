@@ -1,9 +1,16 @@
 <div class="panel panel-info person" draggable="true">
 	<div class="panel-heading">
-		<strong>{{ sc.card.summary }}</strong>
-		<div class="btn-group pull-right" role="group">
+		<div class="btn-group pull-right">
 			<button class="btn btn-default btn-xs" ng-click="sc.editCard()"><i class="fa fa-pencil"></i></button>
-			<button class="btn btn-default btn-xs" ng-click="sc.deleteCard()"><i class="fa fa-times"></i></button>
+			<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu">
+				<li><button class="btn btn-link" ng-click="sc.deleteCard()"><i class="fa fa-times"></i> Delete Story</button></li>
+			</ul>
+		</div>		
+		<div>
+			<strong>{{ sc.card.summary }}</strong>
 		</div>
 	</div>
 	<div class="panel-body">

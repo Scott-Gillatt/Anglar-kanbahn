@@ -5,30 +5,31 @@
 	</div>
 	<div class="modal-body">
 		
-		<div class="row">
-			<div class="col-sm-2">
-				<div ng-repeat="user in uc.members">
-					<a class="avatar-navbar">
-						<img ng-src="{{ user.photoURL }}" class="img-thumbnail avatar-chat">
-					</a>
-				</div>
-			</div>
-			
-			<div class="col-sm-9">
+		<div class="row">			
+			<div class="col-sm-12">
 				<div class="chat-box">
-					
+					<ul class="media-list">
+						<li class="media" ng-repeat="message in uc.messages">
+							<div class="media-left media-middle">
+								<img class="media-object avatar-chatbox" ng-src="{{ 'https://robohash.org/' + message.uid + '.png?set=set2' }}">
+							</div>
+							<div class="media-body media-middle">
+								{{ message.text }}
+							</div>
+						</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-sm-offset-2 col-sm-9">
-				<textarea class="form-control" rows="2"></textarea>
+			<div class="col-sm-offset-2 col-sm-7">
+				<textarea ng-model="uc.message" class="form-control" rows="2"></textarea>
+			</div>
+			<div class="col-sm-2">
+				<button ng-click="uc.postMessage()" type="button" class="btn btn-primary"><i class="fa fa-share"></i></button>
 			</div>
 		</div>
 		
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-success" type="button" ng-click="uc.send()">Pile Da Chit</button>
 	</div>
 </script>
 

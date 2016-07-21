@@ -2,157 +2,112 @@
 	
 	var app = angular.module('ngKanban');
 
-	app.factory('storageService', ['$q', function ($q) {
+	app.factory('storageService', ['$q','$rootScope', function ($q,$rootScope) {
 		
 		var LIST_STORAGE_ID = 'kanban-list-store';
 		var STORY_STORAGE_ID = 'kanban-story-store';
 		var lists = [];
 		var stories = [];
 
-		function addList(list) {
-			
-			lists.push(list);
-			saveToLocalStorage();
+		// set up firbase subscriptions for lists and stories
+		function subscribeToListUpdates() {
 
-			return lists; 
+			firebase.database().ref('/lists').on('value', function (snapshot) {
+			
+				var lists = [];
+
+				snapshot.forEach(function (childSnapshot) {
+					console.log(childSnapshot.val());
+					lists.push(childSnapshot.val());
+				});
+		
+				$rootScope.$broadcast('lists-updated', lists);
+			});
 		}	
 
-		function updateList(list) {
+		function subscribeToStoriesUpdates() {
 
-			var original = lists.find(function (item) {
-				return item.id === list.id;
-			})
-
-			original.name = list.name;
-			original.description = list.description;
+			firebase.database().ref('/stories').on('value', function (snapshot) {
 			
-			saveToLocalStorage();
+				var stories = [];
 
-			return lists;
-		}
+				snapshot.forEach(function (childSnapshot) {
+					
+					stories.push(childSnapshot.val());
+
+				});
+		
+				$rootScope.$broadcast('stories-updated', stories);
+			});
+		}	
+
+		function saveList(list) {
+
+			firebase.database().ref('/lists/' + list.id).set(list);
+			firebase.database().ref('/stories').once('value', function (snapshot) {
+			
+				var stories = [];
+
+				snapshot.forEach(function (childSnapshot) {
+					
+					stories.push(childSnapshot.val());
+
+				});
+		
+				$rootScope.$broadcast('stories-updated', stories);
+			});
+		}		
 
 		function deleteList(list) {
 
-			lists = lists.filter(function (item) {
-				return item.id !== list.id;
-			});
+			firebase.database().ref('/lists/' + list.id).remove();
 
-			saveToLocalStorage();
-
-			return lists;
-		}
-		
-		function getLists() {
-
-			var deferred = $q.defer();
-
-			var data = localStorage.getItem(LIST_STORAGE_ID);
-
-			try {
-				lists = JSON.parse(data);
-			}
-			catch (err) {
-				console.log('Error: ', err);
-				lists = [];
-			}
-			finally {
-				if (lists.length < 1) {
-					localStorage.setItem(LIST_STORAGE_ID, '[]');
-				}
-			}
-
-			deferred.resolve(lists);
-			
-			return deferred.promise;
 		}
 
-		function addStory(story) {
+		function saveStory(story) {
 			
-			stories.push(story);
-			saveToLocalStorage();
+			firebase.database().ref('/stories/' + story.id).set(story);			
 
-			var filtered = stories.filter(function (item) {
-				return item.listId === story.listId;
-			});
-
-			return filtered; 
 		}	
-
-		function updateStory(story) {
-
-			var original = stories.find(function (item) {
-				return item.id === story.id;
-			})
-
-			original.summary = story.summary;
-			original.detail = story.detail;
-			
-			saveToLocalStorage();
-
-			var filtered = stories.filter(function (item) {
-				return item.listId === story.listId;
-			});
-
-			return filtered;
-		}
 
 		function deleteStory(story) {
 
-			stories = stories.filter(function (item) {
-				return item.id !== story.id;
-			});
+			firebase.database().ref('/stories/' + story.id).remove();			
 
-			saveToLocalStorage();
-
-			var filtered = stories.filter(function (item) {
-				return item.listId === story.listId;
-			});
-
-			return filtered;
-		}
-		
-		function getStories(listId) {
-
-			var deferred = $q.defer();
-
-			stories = JSON.parse(localStorage.getItem(STORY_STORAGE_ID) || '[]');
-			
-			var filtered = stories.filter(function (item) {
-				return item.listId === listId;
-			});
-
-			deferred.resolve(filtered);
-			
-			return deferred.promise;
 		}
 
 		function findStories(term) {
 
-			var found = stories.filter(function (item) {
+			var deferred = $q.defer();
+			
+			firebase.database().ref('/stories').once('value', function (snapshot) {
 				
-				var data = item.summary.toLowerCase() + ' ' + item.detail.toLowerCase();
+				var stories = [];
 
-				return data.includes(term.toLowerCase());
+				snapshot.forEach(function (childSnapshot) {
+					
+					var story = childSnapshot.val();
+					var data = story.summary.toLowerCase() + ' ' + story.detail.toLowerCase();
+
+					if (data.includes(term.toLowerCase())) {
+						stories.push(story);
+					}
+				});
+
+				deferred.resolve(stories);
 			});	
 			
-			return found;
-		}
-
-		function saveToLocalStorage() {
-			localStorage.setItem(LIST_STORAGE_ID, JSON.stringify(lists));
-			localStorage.setItem(STORY_STORAGE_ID, JSON.stringify(stories));
+			return deferred.promise;
 		}
 
 		return {
-			addList: addList,
-			getLists: getLists,
-			updateList: updateList,
+			saveList: saveList,
 			deleteList: deleteList,
-			addStory: addStory,
-			getStories: getStories,
-			updateStory: updateStory,
+			saveStory: saveStory,
 			deleteStory: deleteStory,
-			findStories: findStories
+			findStories: findStories,
+			subscribeToListUpdates: subscribeToListUpdates,
+			subscribeToStoriesUpdates: subscribeToStoriesUpdates
 		};
 	}]);	
 })();

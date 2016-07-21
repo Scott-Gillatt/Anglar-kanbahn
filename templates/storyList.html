@@ -1,11 +1,21 @@
 <div>
 	<div class="panel panel-default" ondragover="sl.canDrop(event)">
 		<div class="panel-heading">
-			<strong>{{ sl.list.name }} </strong>
-			<div class="btn-group pull-right" role="group">
-				<button class="btn btn-default btn-xs" ng-click="sl.addCard()"><i class="fa fa-plus"></i></button>
-				<button class="btn btn-default btn-xs" ng-click="sl.editList()"><i class="fa fa-pencil"></i></button>
-				<button class="btn btn-default btn-xs" ng-click="sl.deleteList()"><i class="fa fa-times"></i></button>
+			<div class="btn-group pull-right">
+				<button type="button" class="btn btn-default btn-xs" ng-click="sl.addCard()"><i class="fa fa-plus"></i></button>
+				<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><button class="btn btn-link" ng-click="sl.editList()"><i class="fa fa-pencil"></i> Edit List</button></li>
+					<li><button class="btn btn-link" ng-click="sl.deleteList()"><i class="fa fa-times"></i> Delete List</button></li>
+					<li role="separator" class="divider"></li>
+					<li><button class="btn btn-link" ng-click="sl.moveList(-1)"><i class="fa fa-caret-left"></i> Move Left</button></li>
+					<li><button class="btn btn-link" ng-click="sl.moveList(1)"><i class="fa fa-caret-right"></i> Move Right</button></li>
+				</ul>
+			</div>
+			<div>
+				<strong>{{ sl.list.name }} </strong>
 			</div>
 		</div>
 		<div class="panel-body">
@@ -24,6 +34,13 @@
 	</div>
 	<div class="modal-body">
 		<form class="form-horizontal">
+			<div class="form-group" ng-if="cm.isEdit">
+				<label for="lists" class="col-sm-2 control-label">List</label>
+				<div class="col-sm-10">
+					<select class="form-control" ng-options="list.id as list.name for list in cm.lists" ng-model="cm.card.listId">
+					</select>
+				</div>
+			</div>
 			<div class="form-group">
 				<label for="summary" class="col-sm-2 control-label">Summary</label>
 				<div class="col-sm-10">

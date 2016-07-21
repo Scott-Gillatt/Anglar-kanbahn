@@ -10,22 +10,30 @@
 
 	app.controller('listModalController', listModalController);
 
-	storyBoardController.$inject = ['$uibModal', 'storageService', 'firebaseService', 'guidService'];
+	storyBoardController.$inject = ['$uibModal', 'storageService', 'guidService','$scope','$timeout'];
 	listModalController.$inject = ['$uibModalInstance', 'list'];
 	
-	function storyBoardController($uibModal, storageService, firebaseService, guidService) {
+	function storyBoardController($uibModal, storageService, guidService, $scope, $timeout) {
 
 		var sb = this;
 		
 		sb.lists = [];
-		
-		sb.$onInit = function () {
-			storageService.getLists().then(
-				function (lists) {
-					sb.lists = lists;
-				}
-			);
-		}
+
+		$scope.$on('lists-updated', function (event, lists) {
+
+			lists.forEach(function (item) {
+				storageService.subscribeToStoriesUpdates(item.id);
+			});
+
+			$timeout(function () {
+				$scope.$apply(function () {
+					sb.lists = lists.sort(function (a, b) {
+						return a.order > b.order;
+					});
+				});
+			}, 100);
+			
+		});
 
 		sb.addList = function () {
 
@@ -47,10 +55,10 @@
 						function (response) {
 
 							newList.id = response.data;
+							newList.order = sb.lists[sb.lists.length - 1].order + 1;
+							
+							storageService.saveList(newList);
 
-							sb.lists = storageService.addList(newList);
-
-							firebaseService.addList(newList);
 						}
 					).catch(
 						function (err) {
@@ -80,7 +88,7 @@
 			modalInstance.result.then(
 				function (editedList) {
 
-					sb.lists = storageService.updateList(editedList);					
+					sb.lists = storageService.saveList(editedList);					
 				},
 				function () {
 					// cancelled
