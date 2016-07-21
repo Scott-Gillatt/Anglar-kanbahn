@@ -20,11 +20,15 @@
 	
 		sc.editCard = function () {
 			sc.list.editCard(sc.card);
-		}
+		};
 
 		sc.deleteCard = function () {
 			sc.list.deleteCard(sc.card);
-		}
+		};
+
+		sc.moveCard = function (direction) {
+			sc.list.moveCard(sc.card, direction);
+		};	
 	}
 
 })();

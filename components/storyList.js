@@ -31,6 +31,10 @@
 					sl.cards = stories.filter(function (item) {
 						return item.listId === sl.list.id;
 					});
+
+					sl.cards = sl.cards.sort(function (a, b) {
+						return a.order > b.order;
+					});
 				});
 			}, 100);
 
@@ -94,6 +98,13 @@
 							newCard.id = response.data;
 							newCard.listId = sl.list.id;
 
+							if (sl.cards.length) {
+								newCard.order = sl.cards[sl.cards.length - 1].order + 1;
+							}
+							else {
+								newCard.order = 1;
+							}
+
 							sl.cards = storageService.saveStory(newCard);
 						}
 					).catch(
@@ -139,6 +150,21 @@
 			sl.cards = storageService.deleteStory(card);
 		};
 
+		sl.moveCard = function (card, direction) {
+
+			var thisIndex = sl.cards.indexOf(card);
+			var otherIndex = thisIndex + direction;
+
+			if (otherIndex > -1 && otherIndex < sl.cards.length) {
+				var otherCard = sl.cards[otherIndex];
+				var otherOrder = otherCard.order;
+
+				otherCard.order = card.order;
+				card.order = otherOrder;
+				storageService.saveStory(otherCard);
+				storageService.saveStory(card);
+			}
+		}
 		sl.canDrop = function (event) {
 			event.preventDefault();
 		}

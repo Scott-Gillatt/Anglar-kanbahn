@@ -7,6 +7,9 @@
 			</button>
 			<ul class="dropdown-menu">
 				<li><button class="btn btn-link" ng-click="sc.deleteCard()"><i class="fa fa-times"></i> Delete Story</button></li>
+				<li role="separator" class="divider"></li>
+				<li><button class="btn btn-link" ng-click="sc.moveCard(-1)"><i class="fa fa-caret-left"></i> Move Up</button></li>
+				<li><button class="btn btn-link" ng-click="sc.moveCard(1)"><i class="fa fa-caret-right"></i> Move Down</button></li>
 			</ul>
 		</div>		
 		<div>
