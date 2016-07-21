@@ -72,7 +72,14 @@ textarea{
 }
 
 .storyBoard {
-  vertical-align: top;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  min-height: 584px;
+}
+
+.storyBoard * {
+  white-space: normal;
 }
 
 .storyList {
