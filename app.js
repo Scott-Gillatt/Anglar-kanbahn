@@ -16,6 +16,14 @@
 			ac.showLogout = ac.user != null;
 			ac.searchTerm = '';
 
+			$('body').on('mouseover', '.media', function () {
+				$(this).addClass('bg-info');
+			});
+			
+			$('body').on('mouseout', '.media', function () {
+				$(this).removeClass('bg-info');
+			});
+			
 			firebase.auth().onAuthStateChanged(function (user) {
 
 				$timeout(function () {
