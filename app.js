@@ -1,6 +1,6 @@
 (function () {
 
-	var app = angular.module('ngKanban', ['ui.bootstrap']);
+	var app = angular.module('ngKanban', ['ui.bootstrap', 'ui.select']);
 
 	app.value('globals', {});
 

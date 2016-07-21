@@ -53,6 +53,20 @@
 					<textarea ng-model="cm.card.detail" class="form-control" id="detail" placeholder="Detail"></textarea>
 				</div>
 			</div>
+			<div class="form-group" ng-if="cm.isEdit">
+				<label for="lists" class="col-sm-2 control-label">Members</label>
+				<div class="col-sm-10">
+					<ui-select multiple ng-model="cm.card.members" on-remove="removed($item, $model)" theme="bootstrap" close-on-select="false" title="Choose a person">
+						<ui-select-match placeholder="Select person...">{{$item.name}}</ui-select-match>
+						<ui-select-choices repeat="user.id as user in cm.users">
+							<div ng-bind-html="user.name"></div>
+							<small>
+								<img class="avatar" ng-src="{{ user.photoURL }}"/> {{user.name}}
+							</small>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+			</div>
 		</form>
 	</div>
 	<div class="modal-footer">

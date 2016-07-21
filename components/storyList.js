@@ -16,10 +16,10 @@
 
 	app.controller('cardModalController', cardModalController);
 
-	storyListController.$inject = ['$scope', '$uibModal', 'storageService', 'guidService', '$timeout'];
-	cardModalController.$inject = ['$uibModalInstance', 'card', 'lists'];
+	storyListController.$inject = ['$scope', '$uibModal', 'globals', 'storageService', 'guidService', '$timeout'];
+	cardModalController.$inject = ['$uibModalInstance', 'globals', 'card', 'lists'];
 
-	function storyListController($scope, $uibModal, storageService, guidService, $timeout) {
+	function storyListController($scope, $uibModal, globals, storageService, guidService, $timeout) {
 
 		var sl = this;
 		sl.cards = [];
@@ -28,6 +28,13 @@
 
 			$timeout(function () {
 				$scope.$apply(function () {
+
+					if (globals.user) {
+						globals.user.stories = stories.filter(function (item) {
+							return item.members && item.members.length && item.members.indexOf(globals.user.uid) > -1;
+						});
+					}
+
 					sl.cards = stories.filter(function (item) {
 						return item.listId === sl.list.id;
 					});
@@ -170,7 +177,7 @@
 		}
 	}
 
-	function cardModalController($uibModalInstance, card, lists) {
+	function cardModalController($uibModalInstance, globals, card, lists) {
 
 		var cm = this;
 
@@ -180,6 +187,13 @@
 			summary: '',
 			detail: ''
 		};
+		cm.users = globals.users.concat([
+			{
+				id: globals.user.uid,
+				name: globals.user.displayName,
+				photoURL: globals.user.photoURL
+			}
+		]);
 
 
 		cm.ok = function () {

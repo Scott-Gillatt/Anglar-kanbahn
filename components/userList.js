@@ -76,9 +76,12 @@
 			});
 
 			$scope.$on('chat-messages-updated', function (event, messages) {
-				ul.messages[messages.conversationId] = messages.messages;
 
-				console.log(ul.messages);
+				var sorted = messages.messages.sort(function (a, b) {
+					return a.timestamp > b.timestamp;
+				});
+
+				ul.messages[messages.conversationId] = messages.messages;
 			});
 
 			chatService.subscribeToConversations(globals.user.uid);
@@ -96,6 +99,7 @@
 
 				$timeout(function () {
 					$scope.$apply(function () {
+						globals.users = users;
 						ul.users = users;
 					});
 				}, 100);

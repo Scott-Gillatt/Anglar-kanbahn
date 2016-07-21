@@ -37,7 +37,7 @@
 	<div class="container">
 		<ul class="nav navbar-nav">
 			<li ng-repeat="user in ul.users">
-				<a class="avatar-navbar">
+				<a class="avatar-navbar" data-toggle="tooltip" data-placement="top" title="{{ user.name }}">
 					<img ng-click="ul.userChat(user)" ng-src="{{ user.photoURL }}" class="img-thumbnail avatar">
 				</a>
 			</li>
