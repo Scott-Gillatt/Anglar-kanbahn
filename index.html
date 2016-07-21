@@ -21,7 +21,7 @@
 			</a>
 			<button ng-show="ac.showRegister" ng-click="ac.register()" type="button" class="btn btn-link navbar-btn navbar-right" title="Register">Register</button>
 			<button ng-show="ac.showLogin" ng-click="ac.login()" type="button" class="btn btn-link navbar-btn navbar-right" title="Log In"><i class="fa fa-sign-in"></i> Log In</button>
-			<a ng-show="ac.showLogout" class="navbar-right avatar-navbar">
+			<a ng-show="ac.showLogout" class="navbar-right avatar-navbar" ng-click="ac.showMyStories()">
 				<img ng-src="{{ ac.user.photoURL }}" class="img-thumbnail avatar">
 			</a>
 			<ul class="nav navbar-nav navbar-right">
@@ -83,7 +83,8 @@
 
 	<script type="text/ng-template" id="searchResultsModal.html">
 		<div class="modal-header">
-			<h3 class="modal-title">Search Results</h3>
+			<h3 ng-if="rm.mode === 'search'" class="modal-title">Search Results</h3>
+			<h3 ng-if="rm.mode === 'assignments'" class="modal-title">My Assignments</h3>
 		</div>
 		<div class="modal-body">
 			<div class="media" ng-repeat="story in rm.results track by $index" ng-click="rm.edit(story.id)"> 

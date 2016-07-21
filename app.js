@@ -101,6 +101,32 @@
 				usersService.exitAccount();
 			};
 
+			ac.showMyStories = function () {
+
+				var modalInstance = $uibModal.open({
+					templateUrl: 'searchResultsModal.html',
+					controller: 'searchResultsController',
+					controllerAs: 'rm',
+					resolve: {
+						results: function () {
+							return globals.user.stories;
+						},
+						term: function () {
+							return null;
+						}
+					}
+				});
+
+				modalInstance.result.then(
+					function (story) {
+						$rootScope.$broadcast('edit-story', story);
+					},
+					function () {
+						// cancelled
+					}
+				);
+			};
+
 			ac.search = function () {
 
 				storageService.findStories(ac.searchTerm).then(
@@ -198,6 +224,8 @@
 
 		var rm = this;
 
+		rm.mode = term ? 'search' : 'assignments';
+		
 		rm.results = results.map(function (item) {
 
 			var resultItem = angular.copy(item);
@@ -223,6 +251,10 @@
 
 		function markTerms(text, term) {
 
+			if (!term) {
+				return text;
+			}		
+			
 			var result = [];
 			var buffer = [];
 			var queue = text.split('');
